@@ -2,7 +2,7 @@ import circleshape
 import pygame
 import shot
 import bomb
-from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED, PLAYER_SHOOT_COOLDOWN, PLAYER_BOMB_COOLDOWN
+from constants import PLAYER_RADIUS, PLAYER_TURN_SPEED, PLAYER_SPEED, PLAYER_SHOOT_SPEED, PLAYER_SHOOT_COOLDOWN, PLAYER_BOMB_COOLDOWN, SCREEN_WIDTH, SCREEN_HEIGHT
 
 class Player(circleshape.CircleShape):
     def __init__(self, x, y):
@@ -39,13 +39,15 @@ class Player(circleshape.CircleShape):
     def drop_bomb(self):
         if self.bomb_counter > 0:
             if self.bomb_cooldown_timer <= 0:
-                newbomb = bomb.Bomb(self.position.x, self.position.y)
+                bomb.Bomb(self.position.x, self.position.y)
                 self.bomb_cooldown_timer = PLAYER_BOMB_COOLDOWN
 
     def update(self, dt):
         keys = pygame.key.get_pressed()
         self.shot_cooldown_timer -= dt
         self.bomb_cooldown_timer -= dt
+        self.position.x %= SCREEN_WIDTH
+        self.position.y %= SCREEN_HEIGHT
 
         if keys[pygame.K_a]:
             self.rotate(-dt)
